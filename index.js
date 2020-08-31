@@ -1,32 +1,21 @@
+require('./services/passport')
 const express = require('express');
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const keys = require('./config/keys');
+const mongoose = require('mongoose');
+const keys = require('./config/keys')
 const app = express();
 
-passport.use(new GoogleStrategy({
-    clientID: keys.googleClientID,
-    clientSecret : keys.googleClientSecret,
-    callbackURL: '/auth/google/callback'
-    },
-    (accessToken,refreshToken,profile,done) =>{
-    console.log(accessToken)
-})
-);
-
-/*
-Here passport.authenticate checks for the string 'google' and goes to the above declared strategy to use the ifo provided
- */
-app.get('/auth/google',passport.authenticate(
-    'google',
-    {scope: ['profile','email']},
+mongoose
+    .connect(
+        keys.mongoURI,
     )
-);
+    .then(() => {
+        console.log("Connected to database!");
+    })
+    .catch(() => {
+        console.log("Connection failed!");
+    });
 
-app.get('/auth/google/callback',passport.authenticate(
-    'google',
-
-))
+require('./routes/authRoutes')(app);
 const PORT = process.env.PORT || 5000
 app.listen(PORT);
 
