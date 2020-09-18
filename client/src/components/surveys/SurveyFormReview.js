@@ -1,16 +1,43 @@
 import React from 'react'
+import {connect} from "react-redux";
+import FIELDS from './formFields'
+import _ from "lodash";
+import * as actions from "../../actions";
 
-const SurveyFormReview = ({onCancel}) =>{
+
+const SurveyFormReview = ({onCancel,formValues,submitSurvey}) =>{
+    const reviewFields = _.map(FIELDS,({name,label}) =>{
+        return (
+            <div key={name}>
+                <label>{label}</ label>
+                <div>{formValues[name]}</div>
+            </div>
+        )
+    })
     return (
         <div>
             <h5>
                 Please confirm your entries
-                <button type="submit" className="yellow darken-3 btn-flat" onClick={onCancel}>
-                    Back
-                </button>
             </h5>
+            {reviewFields}
+            <button type="submit" className="yellow darken-3 white-text btn-flat" onClick={onCancel}>
+                Back
+            </button>
+            <button
+                className="green btn-flat right white-text"
+                onClick={() => submitSurvey(formValues)}
+            >
+                Send Survey
+                <i className="material-icons right">email</i>
+            </button>
         </div>
     )
 }
 
-export default SurveyFormReview
+function mapStateToProps(state){
+    return {
+        formValues :state.form.surveyForm.values
+    };
+}
+
+export default connect(mapStateToProps,actions)(SurveyFormReview)
