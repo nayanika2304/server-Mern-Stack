@@ -7,6 +7,9 @@ const Landing = () =>{
                 Emaily!
             </h1>
             Collect Feedback from your users
+            <br/>
+            <br/>
+            <a href='/surveys'>Let`s Get Started</a>
         </div>
     )
 }
