@@ -7,6 +7,7 @@ const requireCredits = require('../middlewares/requireCredits');
 const Mailer = require('../services/Mailer')
 const Survey = mongoose.model('surveys');
 const surveyTemplate = require('../services/emailTemplates/surveyTemplates')
+const { Path } = require('path-parser');
 
 module.exports = (app) =>{
 
